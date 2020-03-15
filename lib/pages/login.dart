@@ -50,12 +50,12 @@ class _LoginFormState extends State<LoginForm> {
             TextFormField(
               validator: (value) {
                 if(value.isEmpty) {
-                  return 'Please enter some text, piss boy';
+                  return 'Please enter some text';
                 }
                 return null;
               },
               decoration: InputDecoration(
-                  labelText: 'E-mail, mothafucka!',
+                  labelText: 'E-mail',
                   labelStyle: TextStyle(
                     color: Colors.deepOrange,
                   ),
@@ -80,12 +80,12 @@ class _LoginFormState extends State<LoginForm> {
             TextFormField(
               validator: (value) {
                 if(value.isEmpty) {
-                  return 'Please enter some text, such as: "My balls."';
+                  return 'Please enter some text';
                 }
                 return null;
               },
               decoration: InputDecoration(
-                labelText: 'ASSword',
+                labelText: 'Password',
                 labelStyle: TextStyle(
                   color: Colors.deepOrange,
                 ),
