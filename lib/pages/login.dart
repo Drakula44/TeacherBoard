@@ -5,13 +5,6 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: AppBar(
-          title: Text('Log in, cunt'),
-          backgroundColor: Colors.deepOrange,
-        ),
-      ),
       body: LoginForm(),
     );
   }
@@ -35,6 +28,21 @@ class _LoginFormState extends State<LoginForm> {
 
   _LoginData _data = new _LoginData();
 
+  bool _obsecureText = true;
+  IconData _passwordIcon = Icons.visibility_off;
+
+  void _togglePassword () {
+    setState(() {
+      _obsecureText = !_obsecureText;
+      if(_passwordIcon == Icons.visibility_off) {
+        _passwordIcon = Icons.visibility;
+      }
+      else {
+        _passwordIcon = Icons.visibility_off;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form (
@@ -47,6 +55,16 @@ class _LoginFormState extends State<LoginForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Teacherboard',
+              style: TextStyle(
+                fontSize: 48.0,
+                fontFamily: 'Quicksand'
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
             TextFormField(
               validator: (value) {
                 if(value.isEmpty) {
@@ -65,17 +83,13 @@ class _LoginFormState extends State<LoginForm> {
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
                   ),
-                  suffixIcon: Icon(
-                    Icons.email,
-                    color: Colors.deepPurple,
-                  ),
               ),
               onSaved: (String value) {
                 _data.email = value;
               },
             ),
             SizedBox(
-              height: 40,
+              height: 16,
             ),
             TextFormField(
               validator: (value) {
@@ -95,20 +109,26 @@ class _LoginFormState extends State<LoginForm> {
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
                 ),
-                suffixIcon: Icon(
-                    Icons.visibility,
-                    color: Colors.deepPurple,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordIcon,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    _togglePassword();
+                  },
                 ),
               ),
               onSaved: (String value) {
                 _data.password = value;
               },
-              obscureText: true,
+              obscureText: _obsecureText,
             ),
             SizedBox(
-              height: 64,
+              height: 32,
             ),
             Container(
+              height: 40,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
                 onPressed: () {
@@ -118,6 +138,7 @@ class _LoginFormState extends State<LoginForm> {
                     Scaffold
                       .of(context)
                       .showSnackBar(SnackBar(content: Text('${_data.email} ${_data.password}'),));
+                    Navigator.pop(context);
                   }
                 },
                 child: Text(

@@ -13,7 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/login',
+      initialRoute: '/home',
+      theme: ThemeData(
+        primaryColor: Colors.deepOrange,
+
+        fontFamily: 'Montserrat'
+
+      ),
       routes: {
         '/home': (context) => Home(),
         '/login': (context) => Login(),
