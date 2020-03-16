@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teacherboardapp/pages/details.dart';
 
 class Home extends StatelessWidget {
 
@@ -7,17 +8,23 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Teacherboard'),
-
-      ),
-      body: Column(
-        children: <Widget>[
+        actions: <Widget>[
           FlatButton(
-            child: Text('Log in'),
+            child: Text(
+                'Log in',
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Navigator.pushNamed(context, '/login');
             },
           ),
-          Flexible(
+
+        ],
+
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
               child: Posts()
           ),
         ],
@@ -57,13 +64,30 @@ class _PostsState extends State<Posts> {
         itemBuilder: (context, i) {
           if(i < _mockPosts.length)
             return _buildRow(_mockPosts[i]);
+          if(i == _mockPosts.length)
+            return Center(
+              child: Text(
+                "Oh, it looks like you've reached the end",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            );
           return null;
         }
     );
   }
 
   Widget _buildRow (Post post) {
-    return PostListItem(post: post);
+    return InkWell(
+        onTap: () {
+          var route = new MaterialPageRoute(
+            builder: (BuildContext context) => new Details(post),
+          );
+          Navigator.of(context).push(route);
+        },
+        child: PostListItem(post: post)
+    );
   }
   
   @override
@@ -170,6 +194,21 @@ class _PostListItemState extends State<PostListItem> {
             child: Column(
               children: <Widget>[
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      _post.timestamp,
+
+                    ),
+                    Text(
+                        _post.school
+                    ),
+                    Text(
+                        _post.subject
+                    )
+                  ],
+                ),
+                Row(
                   children: <Widget>[
                     Expanded(
                       flex: 2,
@@ -241,21 +280,6 @@ class _PostListItemState extends State<PostListItem> {
                     )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      _post.timestamp,
-
-                    ),
-                    Text(
-                        _post.school
-                    ),
-                    Text(
-                        _post.subject
-                    )
-                  ],
-                )
               ],
             )
         )

@@ -77,12 +77,12 @@ class _LoginFormState extends State<LoginForm> {
                   labelStyle: TextStyle(
                     color: Colors.deepOrange,
                   ),
-                  enabledBorder: UnderlineInputBorder(
+                  /*enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
-                  ),
+                  ),*/
               ),
               onSaved: (String value) {
                 _data.email = value;
@@ -103,12 +103,12 @@ class _LoginFormState extends State<LoginForm> {
                 labelStyle: TextStyle(
                   color: Colors.deepOrange,
                 ),
-                enabledBorder: UnderlineInputBorder(
+                /*enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
-                ),
+                ),*/
                 suffixIcon: IconButton(
                   icon: Icon(
                     _passwordIcon,

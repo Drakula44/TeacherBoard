@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:teacherboardapp/pages/details.dart';
 import 'package:teacherboardapp/pages/home.dart';
 import 'package:teacherboardapp/pages/login.dart';
 
