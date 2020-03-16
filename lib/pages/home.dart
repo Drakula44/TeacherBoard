@@ -36,13 +36,14 @@ class Home extends StatelessWidget {
 class Post {
   String title = '';
   String content = '';
+  String author = '';
   int likes = 0;
   int dislikes = 0;
   String timestamp = '';
   String school = '';
   String subject = '';
 
-  Post(this.title, this.content, this.likes, this.dislikes, this.timestamp,
+  Post(this.title, this.content, this.author, this.likes, this.dislikes, this.timestamp,
       this.school, this.subject);
 
 
@@ -56,8 +57,8 @@ class Posts extends StatefulWidget {
 
 class _PostsState extends State<Posts> {
 
-  List<Post>_mockPosts = [new Post('Naslov 1', 'blah blah', 23, 11, '16 Mar 2020', 'Matematicka gimnazija', 'Analiza'),
-    new Post('drakula je peder', 'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ', 1000, 0, '11 Sep 2001', 'Frizerska skola', 'Brijanje dlaka na jajaima')];
+  List<Post>_mockPosts = [new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020', 'Matematicka gimnazija', 'Analiza'),
+    new Post('drakula je peder', 'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ','CeoSvet', 1000, 0, '11 Sep 2001', 'Frizerska skola', 'Brijanje dlaka na jajaima')];
 
   Widget _buildPosts() {
     return ListView.builder(
@@ -192,6 +193,7 @@ class _PostListItemState extends State<PostListItem> {
         child: Padding(
             padding: EdgeInsets.all(8),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -280,6 +282,7 @@ class _PostListItemState extends State<PostListItem> {
                     )
                   ],
                 ),
+                Text(_post.author),
               ],
             )
         )
