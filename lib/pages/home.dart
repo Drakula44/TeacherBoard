@@ -57,15 +57,25 @@ class Posts extends StatefulWidget {
 
 class _PostsState extends State<Posts> {
 
-  List<Post>_mockPosts = [new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020', 'Matematicka gimnazija', 'Analiza'),
-    new Post('drakula je peder', 'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ','CeoSvet', 1000, 0, '11 Sep 2001', 'Frizerska skola', 'Brijanje dlaka na jajaima')];
+  List<Post> mockPosts = [];
+
+  Future _getPosts() async {
+    mockPosts = await [new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020', 'Matematicka gimnazija', 'Analiza'),
+      new Post('drakula je peder', 'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ','CeoSvet', 1000, 0, '11 Sep 2001', 'Frizerska skola', 'Brijanje dlaka na jajaima')];
+    //Ovo async await vrv nisam dobro uradio to je nes da bi radilo i sa backendom al jebes ga
+  }
+
+  initState() {
+    _getPosts();
+    super.initState();
+  }
 
   Widget _buildPosts() {
     return ListView.builder(
         itemBuilder: (context, i) {
-          if(i < _mockPosts.length)
-            return _buildRow(_mockPosts[i]);
-          if(i == _mockPosts.length)
+          if(i < mockPosts.length)
+            return _buildRow(mockPosts[i]);
+          if(i == mockPosts.length)
             return Center(
               child: Text(
                 "Oh, it looks like you've reached the end",
@@ -200,15 +210,27 @@ class _PostListItemState extends State<PostListItem> {
                   children: <Widget>[
                     Text(
                       _post.timestamp,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
 
                     ),
                     Text(
-                        _post.school
+                        _post.school,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
                     ),
                     Text(
-                        _post.subject
+                        _post.subject,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
                     )
                   ],
+                ),
+                Divider(
+                  thickness: 1,
                 ),
                 Row(
                   children: <Widget>[
@@ -282,7 +304,15 @@ class _PostListItemState extends State<PostListItem> {
                     )
                   ],
                 ),
-                Text(_post.author),
+                Divider(
+                  thickness: 1,
+                ),
+                Text(
+                  'By ${_post.author}',
+                  style: TextStyle(
+                    fontSize: 12
+                  ),
+                ),
               ],
             )
         )
