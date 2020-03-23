@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:teacherboardapp/pages/details.dart';
+import 'package:teacherboardapp/pages/profile.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int selectedIndex = 0;
+
+  final navOptions = [
+    Posts(),
+    Profile(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +35,36 @@ class Home extends StatelessWidget {
         ],
 
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-              child: Posts()
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Theme.of(context).primaryColor,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+            ),
+            title: Text(
+              'Home',
+            ),
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              title: Text(
+                'Profile',
+              )
           ),
         ],
-      )
+        currentIndex: selectedIndex,
+        onTap: (i) {
+          setState(() {
+            selectedIndex = i;
+          });
+        },
+      ),
+      body: navOptions.elementAt(selectedIndex)
     );
   }
 }
@@ -51,6 +87,9 @@ class Post {
 
 
 class Posts extends StatefulWidget {
+
+  //TODO: Premestiti klasu u svoj fajl i proslediti joj postove (mrzi me sad)
+
   @override
   _PostsState createState() => _PostsState();
 }
@@ -59,10 +98,10 @@ class _PostsState extends State<Posts> {
 
   List<Post> mockPosts = [];
 
-  Future _getPosts() async {
-    mockPosts = await [new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020', 'Matematicka gimnazija', 'Analiza'),
-      new Post('drakula je peder', 'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ','CeoSvet', 1000, 0, '11 Sep 2001', 'Frizerska skola', 'Brijanje dlaka na jajaima')];
-    //Ovo async await vrv nisam dobro uradio to je nes da bi radilo i sa backendom al jebes ga
+   _getPosts() {
+    mockPosts =  [new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020', 'Matematicka gimnazija', 'Analiza'),
+      new Post('drakula je peder', 'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ','CeoSvet', 1000, 0, '11 Sep 2001', 'Frizerska skola', 'Brijanje dlaka na jajaima'),
+      new Post('Korona nas jebe',  'korona nas loma jebe u dupe', 'AVAVAV',27, 2222, '32 Feb 2020', 'Skole zatvorene', 'Predemet')];
   }
 
   initState() {

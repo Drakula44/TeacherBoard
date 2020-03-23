@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.deepOrange,
 
-        fontFamily: 'Montserrat'
+        fontFamily: 'Montserrat',
+
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent
 
       ),
       routes: {
