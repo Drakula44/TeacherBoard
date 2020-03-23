@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:teacherboardapp/pages/home.dart';
+import 'package:teacherboardapp/widgets/posts.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  List<Post> posts;
+
+  List<Post> _getPosts() {
+    return [new Post('Obozavam bakar', 'jednom sam ostalim ciganima ukrao bakar i onda sam se bas smejao', 'Mudja', 999, 0, '23 Mar 2020', 'Ciganska skola', 'Kradja bakra'),
+      new Post('vristanje', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'Mudja', 999, 0, '23 Mar 2020', 'Ciganska skola', 'Kradja bakra')];
+  }
+
+  @override
+  void initState() {
+    posts = _getPosts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,7 +77,7 @@ class Profile extends StatelessWidget {
             ),
           ],
         ),
-        Expanded(child: Posts()),
+        Expanded(child: Posts(posts: posts)),
       ],
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teacherboardapp/pages/home.dart';
+import 'package:teacherboardapp/widgets/posts.dart';
 
 class Comment {
   String content;
@@ -37,7 +37,7 @@ class _DetailsState extends State<Details> {
       ),
       body: Column(
         children: <Widget>[
-          PostListItem(post: widget._post),
+          PostListItem(post: widget._post, maxLines: 30,),
           Expanded(
             child: ListView.builder(
                 itemBuilder: (context, i) {
