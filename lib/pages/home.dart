@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teacherboardapp/pages/details.dart';
+import 'package:teacherboardapp/pages/new_post.dart';
 import 'package:teacherboardapp/pages/profile.dart';
 
 class Home extends StatefulWidget {
@@ -13,14 +14,21 @@ class _HomeState extends State<Home> {
 
   final navOptions = [
     Posts(),
+    NewPost(),
     Profile(),
+  ];
+
+  final List<String> appBarTitles = [
+    'Teacherboard',
+    'Create a new post',
+    'You'
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Teacherboard'),
+        title: Text(appBarTitles[selectedIndex]),
         actions: <Widget>[
           FlatButton(
             child: Text(
@@ -47,6 +55,14 @@ class _HomeState extends State<Home> {
             title: Text(
               'Home',
             ),
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add,
+              ),
+              title: Text(
+                'New Post',
+              )
           ),
           BottomNavigationBarItem(
               icon: Icon(
