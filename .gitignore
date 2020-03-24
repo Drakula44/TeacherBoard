@@ -7,7 +7,7 @@
 pubspec.lock
 .idea/
 .dart_tool/
-.packages
+./.packages
 
 # Files for the ART/Dalvik VM
 *.dex

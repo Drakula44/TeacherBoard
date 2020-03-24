@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "973378655513",
+    "firebase_url": "https://teacherboard-60ba7.firebaseio.com",
+    "project_id": "teacherboard-60ba7",
+    "storage_bucket": "teacherboard-60ba7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973378655513:android:955a4b67546248df636188",
+        "android_client_info": {
+          "package_name": "com.ognjenNdrakula.teacherboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973378655513-la0d5bqrbim5k44bn0blb606pn5567ag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ognjenNdrakula.teacherboard",
+            "certificate_hash": "673b43eee57ebe08e5ed422b96a3ec263ccc51ea"
+          }
+        },
+        {
+          "client_id": "973378655513-pcgh6qd9274u7b510230ps47rb2eil5d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu0X4uDjHdYm7-xT9HKxsKjTkYLMLhrjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973378655513-pcgh6qd9274u7b510230ps47rb2eil5d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
