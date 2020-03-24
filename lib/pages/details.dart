@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
 
@@ -5,13 +6,12 @@ class Comment {
   String content;
   String author;
   String timestamp;
+  String commentID;
 
-  Comment(this.content, this.author, this.timestamp);
-
+  Comment(this.content, this.author, this.timestamp, {this.commentID = ''});
 }
 
 class Details extends StatefulWidget {
-
   final Post _post;
 
   Details(this._post);
@@ -21,13 +21,22 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-
-  List<Comment> comments = [new Comment('epic', 'drakula44', '31 Feb 1994'), new Comment('komentar', 'stex', '19 Apr 2002')];
+  String postID;
+  List<Comment> comments = [
+    new Comment('epic', 'drakula44', '31 Feb 1994'),
+    new Comment('komentar', 'stex', '19 Apr 2002')
+  ];
 
   final _commentFormKey = GlobalKey<FormState>();
 
   String _currentComment;
-  TextEditingController _commentTextEditingController = new TextEditingController();
+  TextEditingController _commentTextEditingController =
+      new TextEditingController();
+  @override
+  void initState() {
+    postID = widget._post.post_id;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,47 +46,69 @@ class _DetailsState extends State<Details> {
       ),
       body: Column(
         children: <Widget>[
-          PostListItem(post: widget._post, maxLines: 30,),
+          PostListItem(
+            post: widget._post,
+            maxLines: 30,
+          ),
           Expanded(
-            child: ListView.builder(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: new Filter(
+                      collection: "commment",
+                      par1name: "post_id",
+                      par1equal: postID)
+                  .results(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) return const Text('Loading...');
+                final int messageCount = snapshot.data.documents.length;
+                return ListView.builder(
+                  itemCount: messageCount,
+                  itemBuilder: (_, int index) {
+                    final DocumentSnapshot document =
+                        snapshot.data.documents[index];
+                    return Card(
+                      child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                document['content'],
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'By ${document['user_name']}',
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                  Text(
+                                    '',
+                                    /*document['time']*/
+                                    style: TextStyle(fontSize: 10),
+                                  )
+                                ],
+                              )
+                            ],
+                          )),
+                    );
+                  },
+                );
+              },
+            )
+            /*
+            ListView.builder(
                 itemBuilder: (context, i) {
                   if(i < comments.length)
-                    return Card (
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              comments[i].content,
-                              style: TextStyle(
-                                fontSize: 16
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                    'By ${comments[i].author}',
-                                  style: TextStyle(
-                                    fontSize: 10
-                                  ),
-                                ),
-                                Text
-                                  (comments[i].timestamp,
-                                  style: TextStyle(
-                                      fontSize: 10
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        )
-                      ),
-                    );
+                    return
+                    ;
+
                   return null;
                 }
-            ),
+            )*/
+            ,
           ),
           Padding(
             padding: EdgeInsets.all(8),
@@ -90,24 +121,20 @@ class _DetailsState extends State<Details> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black
-                        ),
+                        border: Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: 100,
-                          maxWidth: 250
-                        ),
+                        constraints:
+                            BoxConstraints(maxHeight: 100, maxWidth: 250),
                         child: SingleChildScrollView(
                           child: TextFormField(
                             controller: _commentTextEditingController,
                             validator: (String value) {
-                              if(value.isEmpty)
+                              if (value.isEmpty)
                                 return 'Comment can\'t be empty';
                               return null;
-                          },
+                            },
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             decoration: InputDecoration(
@@ -135,12 +162,11 @@ class _DetailsState extends State<Details> {
                     ),
                     color: Theme.of(context).primaryColor,
                     onPressed: () {
-                      if(_commentFormKey.currentState.validate()) {
+                      if (_commentFormKey.currentState.validate()) {
                         _commentFormKey.currentState.save();
                         setState(() {
-                            comments.add(
-                                new Comment(_currentComment, 'author',
-                                    'right now'));
+                          comments.add(new Comment(
+                              _currentComment, 'author', 'right now'));
                         });
                       }
                     },
@@ -154,4 +180,3 @@ class _DetailsState extends State<Details> {
     );
   }
 }
-

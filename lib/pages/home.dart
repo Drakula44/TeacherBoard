@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +14,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
-  List<Post> posts
-  void _getPosts() async {
+  /*void _getPosts() async {
     Firestore.instance.collection('posts').
     posts =  [
       new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020',
@@ -35,15 +33,16 @@ class _HomeState extends State<Home> {
     ];
   }
 
+   */
+
   List<Post> posts;
 
   List<Widget> navOptions;
 
   @override
   void initState() {
-    posts = _getPosts();
     navOptions = [
-      Posts(posts: posts),
+      Posts(filter: new Filter(all: true, collection: "posts")),
       NewPost(),
       Profile(),
     ];

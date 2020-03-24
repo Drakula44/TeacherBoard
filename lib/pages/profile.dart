@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
 
 class Profile extends StatefulWidget {
-
+  String userUID = "";
+  String username = "ognjen_gej";
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  List<Post> posts;
-
-  List<Post> _getPosts() {
-    return [new Post('Obozavam bakar', 'jednom sam ostalim ciganima ukrao bakar i onda sam se bas smejao', 'Mudja', 999, 0, '23 Mar 2020', 'Ciganska skola', 'Kradja bakra'),
-      new Post('vristanje', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'Mudja', 999, 0, '23 Mar 2020', 'Ciganska skola', 'Kradja bakra')];
-  }
-
+  String userUID;
+  String username;
   @override
   void initState() {
-    posts = _getPosts();
+    username = widget.username;
+    userUID = widget.userUID;
     super.initState();
   }
 
@@ -50,14 +47,22 @@ class _ProfileState extends State<Profile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                      'Mudja',
+                    username,
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  Text('Certified bakar stealer', style: TextStyle(fontStyle: FontStyle.italic),),
-                  SizedBox(height: 8,),
-                  Text('9000', style: TextStyle(fontSize: 40),)
+                  Text(
+                    'Certified bakar stealer',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    '9000',
+                    style: TextStyle(fontSize: 40),
+                  )
                 ],
               )
             ],
@@ -77,7 +82,7 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-        Expanded(child: Posts(posts: posts)),
+        Expanded(child: Posts(filter: new Filter(user: username))),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacherboardapp/pages/details.dart';
 
@@ -10,63 +11,84 @@ class Post {
   String timestamp = '';
   String school = '';
   String subject = '';
+  String post_id = '';
 
   Post(this.title, this.content, this.author, this.likes, this.dislikes,
-      this.timestamp, this.school, this.subject);
+      this.timestamp, this.school, this.subject, this.post_id);
+}
+
+class Filter {
+  bool all;
+  String collection;
+  String user;
+  String par1name;
+  String par1equal;
+  Filter(
+      {this.all = false,
+      this.par1equal = "",
+      this.par1name = '',
+      this.collection = 'posts',
+      this.user = ''});
+  Stream<QuerySnapshot> results() {
+    if (all) {
+      return Firestore.instance.collection(collection).snapshots();
+    } else {
+      if (user != "") {
+        return Firestore.instance
+            .collection(collection)
+            .where('user_name', isEqualTo: user)
+            .snapshots();
+      } else {
+        return Firestore.instance
+            .collection(collection)
+            .where(par1name, isEqualTo: par1equal)
+            .snapshots();
+      }
+    }
+  }
 }
 
 class Posts extends StatefulWidget {
-  const Posts({this.posts});
-
-  final List<Post> posts;
-
+  const Posts({this.filter});
+  final Filter filter;
   @override
   _PostsState createState() => _PostsState();
 }
 
 class _PostsState extends State<Posts> {
-  List<Post> posts;
+  Filter filter;
 
   initState() {
-    posts = widget.posts;
+    filter = widget.filter;
     super.initState();
   }
 
-/*
   Widget _buildPosts() {
-    return ListView.builder(
-        itemBuilder: (context, i) {
-          if(i < posts.length)
-            return _buildRow(posts[i]);
-          if(i == posts.length)
-            return Center(
-              child: Text(
-                "Oh, it looks like you've reached the end",
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            );
-          return null;
-        }
-    );
-  }
-
- */
-  Widget _buildPosts() {
-    return ListView.builder(itemBuilder: (context, i) {
-      if (i < posts.length) return _buildRow(posts[i]);
-      if (i == posts.length)
-        return Center(
-          child: Text(
-            "Oh, it looks like you've reached the end",
-            style: TextStyle(
-              color: Colors.grey,
-            ),
-          ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: filter.results(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return const Text('Loading...');
+        final int messageCount = snapshot.data.documents.length;
+        return ListView.builder(
+          itemCount: messageCount,
+          itemBuilder: (_, int index) {
+            final DocumentSnapshot document = snapshot.data.documents[index];
+            // TODO popraviti time da radi
+            Post post = new Post(
+                document['title'],
+                /*document['content']*/ document.documentID,
+                document['user_name'],
+                document['likes'],
+                document['dislikes'],
+                /*document['time']*/ '',
+                document['school_name'],
+                document['subject_name'],
+                document.documentID);
+            return _buildRow(post);
+          },
         );
-      return null;
-    });
+      },
+    );
   }
 
   Widget _buildRow(Post post) {
