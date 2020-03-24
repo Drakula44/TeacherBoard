@@ -5,6 +5,8 @@
 *.aab
 
 pubspec.lock
+.flutter-*
+
 .idea/
 .dart_tool/
 ./.packages

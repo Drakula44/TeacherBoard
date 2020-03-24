@@ -11,13 +11,11 @@ class Post {
   String school = '';
   String subject = '';
 
-  Post(this.title, this.content, this.author, this.likes, this.dislikes, this.timestamp,
-      this.school, this.subject);
+  Post(this.title, this.content, this.author, this.likes, this.dislikes,
+      this.timestamp, this.school, this.subject);
 }
 
-
 class Posts extends StatefulWidget {
-
   const Posts({this.posts});
 
   final List<Post> posts;
@@ -27,7 +25,6 @@ class Posts extends StatefulWidget {
 }
 
 class _PostsState extends State<Posts> {
-
   List<Post> posts;
 
   initState() {
@@ -35,6 +32,7 @@ class _PostsState extends State<Posts> {
     super.initState();
   }
 
+/*
   Widget _buildPosts() {
     return ListView.builder(
         itemBuilder: (context, i) {
@@ -53,7 +51,25 @@ class _PostsState extends State<Posts> {
         }
     );
   }
-  Widget _buildRow (Post post) {
+
+ */
+  Widget _buildPosts() {
+    return ListView.builder(itemBuilder: (context, i) {
+      if (i < posts.length) return _buildRow(posts[i]);
+      if (i == posts.length)
+        return Center(
+          child: Text(
+            "Oh, it looks like you've reached the end",
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        );
+      return null;
+    });
+  }
+
+  Widget _buildRow(Post post) {
     return InkWell(
         onTap: () {
           var route = new MaterialPageRoute(
@@ -61,8 +77,7 @@ class _PostsState extends State<Posts> {
           );
           Navigator.of(context).push(route);
         },
-        child: PostListItem(post: post)
-    );
+        child: PostListItem(post: post));
   }
 
   @override
@@ -71,13 +86,8 @@ class _PostsState extends State<Posts> {
   }
 }
 
-
 class PostListItem extends StatefulWidget {
-
-  const PostListItem({
-    this.post,
-    this.maxLines
-  });
+  const PostListItem({this.post, this.maxLines});
 
   final Post post;
   final int maxLines;
@@ -87,7 +97,6 @@ class PostListItem extends StatefulWidget {
 }
 
 class _PostListItemState extends State<PostListItem> {
-
   Post _post;
 
   int _likeState = 0;
@@ -98,7 +107,7 @@ class _PostListItemState extends State<PostListItem> {
   int maxLines;
 
   void _toggleLike(int newLikeState) {
-    if(_likeState == newLikeState) {
+    if (_likeState == newLikeState) {
       newLikeState = 0;
     }
 
@@ -111,9 +120,7 @@ class _PostListItemState extends State<PostListItem> {
 
             _post.likes++;
 
-            if(_likeState == -1)
-              _post.dislikes--;
-
+            if (_likeState == -1) _post.dislikes--;
 
             //TODO: Server side
           });
@@ -126,10 +133,8 @@ class _PostListItemState extends State<PostListItem> {
             _likeTextColor = Colors.black;
             _dislikeTextColor = Colors.black;
 
-            if(_likeState == -1)
-              _post.dislikes--;
-            if(_likeState == 1)
-              _post.likes--;
+            if (_likeState == -1) _post.dislikes--;
+            if (_likeState == 1) _post.likes--;
 
             //TODO: Server side
           });
@@ -144,8 +149,7 @@ class _PostListItemState extends State<PostListItem> {
 
             _post.dislikes++;
 
-            if(_likeState == 1)
-              _post.likes--;
+            if (_likeState == 1) _post.likes--;
           });
         }
         break;
@@ -156,13 +160,12 @@ class _PostListItemState extends State<PostListItem> {
         }
     }
     _likeState = newLikeState;
-
   }
 
   @override
   void initState() {
     _post = widget.post;
-    if(widget.maxLines!=null)
+    if (widget.maxLines != null)
       maxLines = widget.maxLines;
     else
       maxLines = 2;
@@ -185,7 +188,6 @@ class _PostListItemState extends State<PostListItem> {
                       style: TextStyle(
                         fontSize: 12,
                       ),
-
                     ),
                     Text(
                       _post.school,
@@ -213,17 +215,19 @@ class _PostListItemState extends State<PostListItem> {
                         children: <Widget>[
                           Text(
                             _post.title,
-                            style: TextStyle(
-                                fontSize: 30.0
-                            ),
+                            style: TextStyle(fontSize: 30.0),
                           ),
-                          Text(_post.content, maxLines: maxLines, overflow: TextOverflow.ellipsis,),
+                          Text(
+                            _post.content,
+                            maxLines: maxLines,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),
                     Expanded(
                         flex: 1,
-                        child: Column (
+                        child: Column(
                           children: <Widget>[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -235,7 +239,7 @@ class _PostListItemState extends State<PostListItem> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: Icon (
+                                  icon: Icon(
                                     Icons.check,
                                     color: Colors.green,
                                     size: 30,
@@ -258,7 +262,7 @@ class _PostListItemState extends State<PostListItem> {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: Icon (
+                                  icon: Icon(
                                     Icons.close,
                                     color: Colors.red,
                                     size: 30,
@@ -272,8 +276,7 @@ class _PostListItemState extends State<PostListItem> {
                               ],
                             ),
                           ],
-                        )
-                    )
+                        ))
                   ],
                 ),
                 Divider(
@@ -281,14 +284,9 @@ class _PostListItemState extends State<PostListItem> {
                 ),
                 Text(
                   'By ${_post.author}',
-                  style: TextStyle(
-                      fontSize: 12
-                  ),
+                  style: TextStyle(fontSize: 12),
                 ),
               ],
-            )
-        )
-
-    );
+            )));
   }
 }

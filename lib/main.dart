@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:teacherboardapp/pages/details.dart';
@@ -10,20 +11,16 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
+  FirebaseUser user;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/home',
       theme: ThemeData(
-        primaryColor: Colors.deepOrange,
-
-        fontFamily: 'Montserrat',
-
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent
-
-      ),
+          primaryColor: Colors.deepOrange,
+          fontFamily: 'Montserrat',
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent),
       routes: {
         '/home': (context) => Home(),
         '/login': (context) => Login(),
