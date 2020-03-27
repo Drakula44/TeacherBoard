@@ -41,6 +41,7 @@ class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF1F2F6),
       appBar: AppBar(
         title: Text(widget._post.title),
       ),
@@ -121,8 +122,12 @@ class _DetailsState extends State<Details> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF1F2F6),
+                        boxShadow: [
+                          BoxShadow(color: Color(0xFFDADFF0), offset: Offset(4,4), blurRadius: 4),
+                          BoxShadow(color: Colors.white, offset: Offset(-4,-4), blurRadius: 4)
+                        ],
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: ConstrainedBox(
                         constraints:
@@ -132,7 +137,7 @@ class _DetailsState extends State<Details> {
                             controller: _commentTextEditingController,
                             validator: (String value) {
                               if (value.isEmpty)
-                                return 'Comment can\'t be empty';
+                                return '';
                               return null;
                             },
                             keyboardType: TextInputType.multiline,
@@ -143,6 +148,10 @@ class _DetailsState extends State<Details> {
                               hintText: 'Leave a comment',
                               errorBorder: InputBorder.none,
                               focusedErrorBorder: InputBorder.none,
+                              errorStyle: TextStyle(
+                                fontSize: 0,
+                                height: 0
+                              )
                             ),
                             onSaved: (value) {
                               _currentComment = value;
@@ -153,23 +162,33 @@ class _DetailsState extends State<Details> {
                       ),
                     ),
                   ),
-                  FlatButton(
-                    child: Text(
-                      'Comment',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF1F2F6),
+                      boxShadow: [
+                        BoxShadow(color: Color(0xFFDADFF0), offset: Offset(4,4), blurRadius: 4),
+                        BoxShadow(color: Colors.white, offset: Offset(-4,-4), blurRadius: 4)
+                      ],
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    color: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      if (_commentFormKey.currentState.validate()) {
-                        _commentFormKey.currentState.save();
-                        setState(() {
-                          comments.add(new Comment(
-                              _currentComment, 'author', 'right now'));
-                        });
-                      }
-                    },
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        'Comment',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_commentFormKey.currentState.validate()) {
+                          _commentFormKey.currentState.save();
+                          setState(() {
+                            comments.add(new Comment(
+                                _currentComment, 'author', 'right now'));
+                          });
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),

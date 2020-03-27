@@ -17,10 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/home',
       theme: ThemeData(
-          primaryColor: Colors.deepOrange,
+          primaryColor: Colors.black,
+          backgroundColor: Colors.red,
           fontFamily: 'Montserrat',
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent),
+      ),
       routes: {
         '/home': (context) => Home(),
         '/login': (context) => Login(),

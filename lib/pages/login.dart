@@ -7,6 +7,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF1F2F6),
       body: LoginForm(),
     );
   }
@@ -93,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
                 decoration: InputDecoration(
                   labelText: 'E-mail',
                   labelStyle: TextStyle(
-                    color: Colors.deepOrange,
+                    color: Theme.of(context).primaryColor,
                   ),
                   /*enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
@@ -119,7 +120,7 @@ class _LoginFormState extends State<LoginForm> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: TextStyle(
-                    color: Colors.deepOrange,
+                    color: Theme.of(context).primaryColor,
                   ),
                   /*enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
@@ -148,6 +149,14 @@ class _LoginFormState extends State<LoginForm> {
               Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0xFFF1F2F6),
+                  boxShadow: [
+                    BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
+                    BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
+                  ],
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: FlatButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
@@ -158,10 +167,9 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text(
                     'Log In',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  color: Colors.deepOrange,
                 ),
               ),
               Container(

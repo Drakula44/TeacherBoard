@@ -75,15 +75,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _checkState();
     return Scaffold(
+        backgroundColor: Color(0xFFF1F2F6),
         appBar: AppBar(
           title: Text(appBarTitles[selectedIndex]),
           actions: <Widget>[
             Container(
-              child: _state
-                  ? Text(_userEmail, style: TextStyle(color: Colors.white))
-                  : FlatButton(
+              child: FlatButton(
                       child: Text(
-                        'Log in',
+                        _state ? _userEmail : 'Log In',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
@@ -95,8 +94,8 @@ class _HomeState extends State<Home> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Theme.of(context).primaryColor,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.grey,
           items: [
             BottomNavigationBarItem(
               icon: Icon(
@@ -128,6 +127,10 @@ class _HomeState extends State<Home> {
             });
           },
         ),
-        body: navOptions.elementAt(selectedIndex));
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: navOptions.elementAt(selectedIndex)
+        )
+    );
   }
 }

@@ -123,8 +123,8 @@ class _PostListItemState extends State<PostListItem> {
 
   int _likeState = 0;
 
-  Color _likeTextColor = Colors.black;
-  Color _dislikeTextColor = Colors.black;
+  FontWeight _likeFontWeight = FontWeight.normal;
+  FontWeight _dislikeFontWeight = FontWeight.normal;
 
   int maxLines;
 
@@ -137,8 +137,8 @@ class _PostListItemState extends State<PostListItem> {
       case 1:
         {
           setState(() {
-            _likeTextColor = Colors.green;
-            _dislikeTextColor = Colors.black;
+            _likeFontWeight = FontWeight.bold;
+            _dislikeFontWeight = FontWeight.normal;
 
             _post.likes++;
 
@@ -152,8 +152,8 @@ class _PostListItemState extends State<PostListItem> {
       case 0:
         {
           setState(() {
-            _likeTextColor = Colors.black;
-            _dislikeTextColor = Colors.black;
+            _likeFontWeight = FontWeight.normal;
+            _dislikeFontWeight = FontWeight.normal;
 
             if (_likeState == -1) _post.dislikes--;
             if (_likeState == 1) _post.likes--;
@@ -166,8 +166,8 @@ class _PostListItemState extends State<PostListItem> {
       case -1:
         {
           setState(() {
-            _likeTextColor = Colors.black;
-            _dislikeTextColor = Colors.red;
+            _likeFontWeight = FontWeight.normal;
+            _dislikeFontWeight = FontWeight.bold;
 
             _post.dislikes++;
 
@@ -196,119 +196,123 @@ class _PostListItemState extends State<PostListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Color(0xFFF1F2F6),
+          boxShadow: [
+            BoxShadow(color: Color(0xFFDADFF0), offset: Offset(4,6), blurRadius: 4),
+            BoxShadow(color: Colors.white, offset: Offset(-4,-6), blurRadius: 4)
+          ],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      _post.timestamp,
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      _post.school,
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      _post.subject,
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            _post.title,
-                            style: TextStyle(fontSize: 30.0),
-                          ),
-                          Text(
-                            _post.content,
-                            maxLines: maxLines,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  _post.likes.toString(),
-                                  style: TextStyle(
-                                    color: _likeTextColor,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.check,
-                                    color: Colors.green,
-                                    size: 30,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _toggleLike(1);
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  _post.dislikes.toString(),
-                                  style: TextStyle(
-                                    color: _dislikeTextColor,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: Colors.red,
-                                    size: 30,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _toggleLike(-1);
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                          ],
-                        ))
-                  ],
-                ),
-                Divider(
-                  thickness: 1,
+                Text(
+                  _post.timestamp,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
                 ),
                 Text(
-                  'By ${_post.author}',
-                  style: TextStyle(fontSize: 12),
+                  _post.school,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
                 ),
+                Text(
+                  _post.subject,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                )
               ],
-            )));
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        _post.title,
+                        style: TextStyle(fontSize: 30.0),
+                      ),
+                      Text(
+                        _post.content,
+                        maxLines: maxLines,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              _post.likes.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: _likeFontWeight,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.check,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _toggleLike(1);
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              _post.dislikes.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: _dislikeFontWeight,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _toggleLike(-1);
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                      ],
+                    ))
+              ],
+            ),
+            Text(
+              'By ${_post.author}',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ));
   }
 }
