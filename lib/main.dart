@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:teacherboardapp/pages/details.dart';
 import 'package:teacherboardapp/pages/home.dart';
 import 'package:teacherboardapp/pages/login.dart';
+import 'package:teacherboardapp/pages/signup.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => Home(),
         '/login': (context) => Login(),
+        '/signup': (context) => SignUp(),
       },
     );
   }

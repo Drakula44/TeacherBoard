@@ -1,35 +1,32 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+class _SignUpData {
+  String email = '';
+  String username = '';
+  String password = '';
+}
 
-class Login extends StatelessWidget {
+class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF1F2F6),
-      body: LoginForm(),
+      body: SignUpForm(),
     );
   }
 }
 
-class _LoginData {
-  String email = '';
-  String password = '';
-}
 
-class LoginForm extends StatefulWidget {
+class SignUpForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _SignUpFormState createState() => _SignUpFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignUpFormState extends State<SignUpForm> {
+
   final _formKey = GlobalKey<FormState>();
 
-  bool _success;
-  String _userEmail;
-
-  _LoginData _data = new _LoginData();
+  _SignUpData _data = new _SignUpData();
 
   bool _obsecureText = true;
   IconData _passwordIcon = Icons.visibility_off;
@@ -45,26 +42,6 @@ class _LoginFormState extends State<LoginForm> {
     });
   }
 
-  void _login(String email, String pass) async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-      email: _data.email,
-      password: _data.password,
-    ))
-        .user;
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('${_data.email} ${_data.password}'),
-        ));
-        Navigator.pop(context);
-      });
-    } else {
-      _success = false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -77,10 +54,6 @@ class _LoginFormState extends State<LoginForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Teacherboard',
-                style: TextStyle(fontSize: 48.0, fontFamily: 'Quicksand'),
-              ),
               SizedBox(
                 height: 40,
               ),
@@ -97,15 +70,42 @@ class _LoginFormState extends State<LoginForm> {
                     color: Theme.of(context).primaryColor,
                   ),
                   /*enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
-                  ),*/
+                  borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
+                ),*/
                 ),
                 onSaved: (String value) {
                   _data.email = value;
                 },
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Username can\'t be empty';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  /*enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
+              ),*/
+                ),
+                onSaved: (String value) {
+                  _data.username = value;
+                },
+                obscureText: _obsecureText,
               ),
               SizedBox(
                 height: 16,
@@ -123,11 +123,11 @@ class _LoginFormState extends State<LoginForm> {
                     color: Theme.of(context).primaryColor,
                   ),
                   /*enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
-                ),*/
+                borderSide: BorderSide(width: 1.5, color: Colors.deepOrange),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(width: 2.0, color: Colors.deepOrange),
+              ),*/
                   suffixIcon: IconButton(
                     icon: Icon(
                       _passwordIcon,
@@ -162,57 +162,16 @@ class _LoginFormState extends State<LoginForm> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      _login(_data.email, _data.password);
                     }
                   },
                   child: Text(
-                    'Log In',
+                    'Sign Up',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Don\'t have an account? '),
-                    ButtonTheme(
-                      padding: EdgeInsets.all(0),
-                      minWidth: 0,
-                      height: 0,
-                      child: FlatButton(
-                        child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/signup');
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  _success == null
-                      ? ''
-                      : (_success
-                          ? 'Successfully signed in, uid: ' + _userEmail
-                          : 'Sign in failed'),
-                  style: TextStyle(color: Colors.red),
-                ),
-              )
             ],
           ),
         ));
