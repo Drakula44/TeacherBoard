@@ -124,8 +124,8 @@ class _DetailsState extends State<Details> {
                       decoration: BoxDecoration(
                         color: Color(0xFFF1F2F6),
                         boxShadow: [
-                          BoxShadow(color: Color(0xFFDADFF0), offset: Offset(4,4), blurRadius: 4),
-                          BoxShadow(color: Colors.white, offset: Offset(-4,-4), blurRadius: 4)
+                          BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
+                          BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
                         ],
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -166,12 +166,13 @@ class _DetailsState extends State<Details> {
                     decoration: BoxDecoration(
                       color: Color(0xFFF1F2F6),
                       boxShadow: [
-                        BoxShadow(color: Color(0xFFDADFF0), offset: Offset(4,4), blurRadius: 4),
-                        BoxShadow(color: Colors.white, offset: Offset(-4,-4), blurRadius: 4)
+                        BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
+                        BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
                       ],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: FlatButton(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       child: Text(
                         'Comment',

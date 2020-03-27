@@ -158,6 +158,7 @@ class _LoginFormState extends State<LoginForm> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: FlatButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
@@ -171,6 +172,32 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text('Don\'t have an account? '),
+                  ButtonTheme(
+                    padding: EdgeInsets.all(0),
+                    minWidth: 0,
+                    height: 0,
+                    child: FlatButton(
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+
+                      },
+                    ),
+                  )
+                ],
               ),
               Container(
                 alignment: Alignment.center,
