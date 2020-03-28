@@ -76,11 +76,11 @@ class _PostsState extends State<Posts> {
             // TODO popraviti time da radi
             Post post = new Post(
                 document['title'],
-                /*document['content']*/ document.documentID,
+                document['content'],
                 document['user_name'],
                 document['likes'],
                 document['dislikes'],
-                /*document['time']*/ '',
+                document['time'],
                 document['school_name'],
                 document['subject_name'],
                 document.documentID);
@@ -140,6 +140,9 @@ class _PostListItemState extends State<PostListItem> {
             _likeFontWeight = FontWeight.bold;
             _dislikeFontWeight = FontWeight.normal;
 
+            _likeButtonColor = Theme.of(context).accentColor;
+            _dislikeButtonColor = Theme.of(context).primaryColor;
+
             _post.likes++;
 
             if (_likeState == -1) _post.dislikes--;
@@ -155,6 +158,9 @@ class _PostListItemState extends State<PostListItem> {
             _likeFontWeight = FontWeight.normal;
             _dislikeFontWeight = FontWeight.normal;
 
+            _likeButtonColor = Theme.of(context).primaryColor;
+            _dislikeButtonColor = Theme.of(context).primaryColor;
+
             if (_likeState == -1) _post.dislikes--;
             if (_likeState == 1) _post.likes--;
 
@@ -168,6 +174,9 @@ class _PostListItemState extends State<PostListItem> {
           setState(() {
             _likeFontWeight = FontWeight.normal;
             _dislikeFontWeight = FontWeight.bold;
+
+            _likeButtonColor = Theme.of(context).primaryColor;
+            _dislikeButtonColor = Theme.of(context).accentColor;
 
             _post.dislikes++;
 
@@ -184,6 +193,9 @@ class _PostListItemState extends State<PostListItem> {
     _likeState = newLikeState;
   }
 
+  Color _likeButtonColor;
+  Color _dislikeButtonColor;
+
   @override
   void initState() {
     _post = widget.post;
@@ -198,38 +210,28 @@ class _PostListItemState extends State<PostListItem> {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Color(0xFFF1F2F6),
+          color: Color(0xFF26282B),
           boxShadow: [
-            BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
-            BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
+            BoxShadow(color: Color(0xFF1B1C1D), offset: Offset(5,5), blurRadius: 11),
+            BoxShadow(color: Color(0xCC2F3136), offset: Offset(-5,-5), blurRadius: 11)
           ],
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  _post.timestamp,
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
                   _post.school,
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
+                  style: Theme.of(context).textTheme.display1,
                 ),
                 Text(
                   _post.subject,
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
+                  style: Theme.of(context).textTheme.display1,
                 )
               ],
             ),
@@ -242,12 +244,13 @@ class _PostListItemState extends State<PostListItem> {
                     children: <Widget>[
                       Text(
                         _post.title,
-                        style: TextStyle(fontSize: 30.0),
+                        style: Theme.of(context).textTheme.title,
                       ),
                       Text(
                         _post.content,
                         maxLines: maxLines,
                         overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.body1,
                       ),
                     ],
                   ),
@@ -262,14 +265,14 @@ class _PostListItemState extends State<PostListItem> {
                             Text(
                               _post.likes.toString(),
                               style: TextStyle(
-                                color: Colors.black,
+                                color: _likeButtonColor,
                                 fontWeight: _likeFontWeight,
                               ),
                             ),
                             IconButton(
                               icon: Icon(
                                 Icons.check,
-                                color: Colors.black,
+                                color: _likeButtonColor,
                                 size: 30,
                               ),
                               onPressed: () {
@@ -286,14 +289,14 @@ class _PostListItemState extends State<PostListItem> {
                             Text(
                               _post.dislikes.toString(),
                               style: TextStyle(
-                                color: Colors.black,
+                                color: _dislikeButtonColor,
                                 fontWeight: _dislikeFontWeight,
                               ),
                             ),
                             IconButton(
                               icon: Icon(
                                 Icons.close,
-                                color: Colors.black,
+                                color: _dislikeButtonColor,
                                 size: 30,
                               ),
                               onPressed: () {
@@ -308,9 +311,21 @@ class _PostListItemState extends State<PostListItem> {
                     ))
               ],
             ),
-            Text(
-              'By ${_post.author}',
-              style: TextStyle(fontSize: 12),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'By ${_post.author}',
+                  style: Theme.of(context).textTheme.display1,
+                ),
+                Text(
+                  _post.timestamp,
+                  style: Theme.of(context).textTheme.display1,
+                ),
+              ],
             ),
           ],
         ));

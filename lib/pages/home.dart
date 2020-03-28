@@ -75,9 +75,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _checkState();
     return Scaffold(
-        backgroundColor: Color(0xFFF1F2F6),
+        backgroundColor: Color(0xFF26282B),
         appBar: AppBar(
-          title: Text(appBarTitles[selectedIndex]),
+          title: Text(appBarTitles[selectedIndex], style: TextStyle(color:Theme.of(context).primaryColor)),
+          backgroundColor: Theme.of(context).accentColor,
           actions: <Widget>[
             Container(
               child: FlatButton(
@@ -93,8 +94,9 @@ class _HomeState extends State<Home> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Color(0xFF26282B),
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme.of(context).primaryColor,
+          selectedItemColor: Theme.of(context).accentColor,
           unselectedItemColor: Colors.grey,
           items: [
             BottomNavigationBarItem(

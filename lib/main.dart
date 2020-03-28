@@ -12,15 +12,34 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+  final Color textColor = Colors.white;
+
   FirebaseUser user;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/home',
       theme: ThemeData(
-          primaryColor: Colors.black,
-          backgroundColor: Colors.red,
-          fontFamily: 'Montserrat',
+        brightness: Brightness.dark,
+        primaryColor: Colors.white,
+        accentColor: Colors.deepOrange,
+        textTheme: TextTheme(
+          display1: TextStyle (
+            color: textColor,
+            fontSize: 12
+          ),
+          body1: TextStyle (
+            color: textColor,
+            fontFamily: 'Estaban'
+          ),
+          title: TextStyle(
+            color: textColor,
+            fontSize: 20,
+            fontFamily: 'Montserrat'
+          )
+        ),
+        fontFamily: 'Montserrat',
       ),
       routes: {
         '/home': (context) => Home(),

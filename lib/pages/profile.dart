@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
 
 class Profile extends StatefulWidget {
-  String userUID = "";
-  String username = "ognjen_gej";
+  final String userUID = "";
+  final String username = "ognjen";
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -31,15 +31,27 @@ class _ProfileState extends State<Profile> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(75),
-                  border: Border.all(
-                    color: Colors.grey[200],
-                  ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(75),
-                  child: Image(
-                    image: AssetImage('images/defaultProfile.jpg'),
-                    height: 150,
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(75),
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF1B1C1D), Color(0xCC2F3136)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight
+                    ),
+                    boxShadow: [
+                      BoxShadow(color: Color(0xFF1B1C1D), offset: Offset(5,5), blurRadius: 11),
+                      BoxShadow(color: Color(0xCC2F3136), offset: Offset(-5,-5), blurRadius: 11)
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(75),
+                    child: Image(
+                      image: AssetImage('images/defaultProfile.jpg'),
+                      height: 150,
+                    ),
                   ),
                 ),
               ),
@@ -48,9 +60,7 @@ class _ProfileState extends State<Profile> {
                 children: <Widget>[
                   Text(
                     username,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.title,
                   ),
                   Text(
                     'Certified bakar stealer',
@@ -75,7 +85,7 @@ class _ProfileState extends State<Profile> {
                 height: 2,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
               ),

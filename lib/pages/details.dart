@@ -41,9 +41,13 @@ class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF1F2F6),
+      backgroundColor: Color(0xFF26282B),
       appBar: AppBar(
-        title: Text(widget._post.title),
+        title: Text(widget._post.title, style: TextStyle(color: Theme.of(context).primaryColor),),
+        backgroundColor: Theme.of(context).accentColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -122,10 +126,10 @@ class _DetailsState extends State<Details> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF1F2F6),
+                        color: Color(0xFF26282B),
                         boxShadow: [
-                          BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
-                          BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
+                          BoxShadow(color: Color(0xFF1B1C1D), offset: Offset(5,5), blurRadius: 11),
+                          BoxShadow(color: Color(0xCC2F3136), offset: Offset(-5,-5), blurRadius: 11)
                         ],
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -164,10 +168,10 @@ class _DetailsState extends State<Details> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFF1F2F6),
+                      color: Color(0xFF26282B),
                       boxShadow: [
-                        BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
-                        BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
+                        BoxShadow(color: Color(0xFF1B1C1D), offset: Offset(5,5), blurRadius: 11),
+                        BoxShadow(color: Color(0xCC2F3136), offset: Offset(-5,-5), blurRadius: 11)
                       ],
                       borderRadius: BorderRadius.circular(20),
                     ),

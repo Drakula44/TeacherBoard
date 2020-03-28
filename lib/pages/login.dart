@@ -7,7 +7,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF1F2F6),
+      backgroundColor: Color(0xFF26282B),
       body: LoginForm(),
     );
   }
@@ -150,10 +150,10 @@ class _LoginFormState extends State<LoginForm> {
                 height: 40,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color(0xFFF1F2F6),
+                  color: Color(0xFF26282B),
                   boxShadow: [
-                    BoxShadow(color: Color(0xFFDADFF0), offset: Offset(5,3), blurRadius: 4),
-                    BoxShadow(color: Colors.white, offset: Offset(-5,-3), blurRadius: 4)
+                    BoxShadow(color: Color(0xFF1B1C1D), offset: Offset(5,5), blurRadius: 11),
+                    BoxShadow(color: Color(0xCC2F3136), offset: Offset(-5,-5), blurRadius: 11)
                   ],
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -180,7 +180,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Don\'t have an account? '),
+                    Text('Don\'t have an account? ', style: TextStyle(fontFamily: 'Montserrat'),),
                     ButtonTheme(
                       padding: EdgeInsets.all(0),
                       minWidth: 0,

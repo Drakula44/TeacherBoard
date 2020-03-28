@@ -64,6 +64,9 @@ flutter:
    - family: Montserrat
      fonts:
        - asset: fonts/Montserrat-Regular.ttf
+   - family: Esteban
+     fonts:
+       - asset: fonts/Esteban-Regular.ttf
 
 
   # For details regarding fonts from package dependencies,
