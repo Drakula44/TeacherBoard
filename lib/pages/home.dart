@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
   }
 
   PageController _pageController = PageController(
-    initialPage: 1,
+    initialPage: 0,
     keepPage: true,
   );
 
