@@ -57,6 +57,7 @@ class _HomeState extends State<Home> {
 
   bool _state = false;
   String _userEmail;
+  String _userName;
   String _userUID;
   FirebaseUser _user;
   void _checkState() async {
