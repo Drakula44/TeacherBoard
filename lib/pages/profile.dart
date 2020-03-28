@@ -64,7 +64,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   Text(
                     'Certified bakar stealer',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: TextStyle(fontStyle: FontStyle.italic, fontFamily: 'Montserrat'),
                   ),
                   SizedBox(
                     height: 8,
