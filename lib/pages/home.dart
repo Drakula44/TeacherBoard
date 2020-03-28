@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teacherboardapp/pages/new_post.dart';
+import 'package:teacherboardapp/pages/search.dart';
 import 'package:teacherboardapp/pages/profile.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
 
@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
   void initState() {
     navOptions = [
       Posts(filter: new Filter(all: true, collection: "posts")),
-      NewPost(),
+      Search(),
       Profile(),
     ];
     super.initState();
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
 
   final List<String> appBarTitles = [
     'Teacherboard',
-    'Create a new post',
+    'Search',
     'You'
   ];
 
@@ -110,10 +110,10 @@ class _HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.add,
+                  Icons.search,
                 ),
                 title: Text(
-                  'New Post',
+                  'Search',
                 )),
             BottomNavigationBarItem(
                 icon: Icon(

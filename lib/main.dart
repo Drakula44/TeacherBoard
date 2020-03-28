@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:teacherboardapp/pages/details.dart';
 import 'package:teacherboardapp/pages/home.dart';
 import 'package:teacherboardapp/pages/login.dart';
+import 'package:teacherboardapp/pages/new_post.dart';
 import 'package:teacherboardapp/pages/signup.dart';
 
 void main() {
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => Home(),
         '/login': (context) => Login(),
         '/signup': (context) => SignUp(),
+        '/new-post': (context) => NewPost(),
       },
     );
   }

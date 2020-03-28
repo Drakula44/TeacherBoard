@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 class NewPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return NewPostForm();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Create a new post', style: TextStyle(color: Theme.of(context).primaryColor)),
+        backgroundColor: Theme.of(context).accentColor,
+      ),
+      body: NewPostForm()
+    );
   }
 }
 
@@ -146,7 +152,7 @@ class _NewPostFormState extends State<NewPostForm> {
             ),
             Positioned(
               right: 20,
-              bottom: 10,
+              bottom: 70,
               child: FloatingActionButton(
                 child: Icon(
                   Icons.add_photo_alternate
