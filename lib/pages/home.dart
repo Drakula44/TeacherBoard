@@ -72,6 +72,12 @@ class _HomeState extends State<Home> {
     }
   }
 
+  PageController _pageController = PageController(
+    initialPage: 1,
+    keepPage: true,
+  );
+
+
   @override
   Widget build(BuildContext context) {
     _checkState();
@@ -127,12 +133,18 @@ class _HomeState extends State<Home> {
           onTap: (i) {
             setState(() {
               selectedIndex = i;
+              _pageController.animateToPage(i, duration: Duration(milliseconds: 500), curve: Curves.ease);
             });
           },
         ),
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          child: navOptions.elementAt(selectedIndex)
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (i) {
+            setState(() {
+              selectedIndex = i;
+            });
+          },
+          children: navOptions
         )
     );
   }
