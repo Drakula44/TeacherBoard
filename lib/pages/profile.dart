@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-        Expanded(child: Posts(filter: new Filter(user: username))),
+        Expanded(child: Posts(filter: new Filter(user: username), showNewPostButton: false, showSchoolSelect: false,)),
       ],
     );
   }

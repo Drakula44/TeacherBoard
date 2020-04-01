@@ -5,6 +5,7 @@ import 'package:teacherboardapp/pages/details.dart';
 import 'package:teacherboardapp/pages/home.dart';
 import 'package:teacherboardapp/pages/login.dart';
 import 'package:teacherboardapp/pages/new_post.dart';
+import 'package:teacherboardapp/pages/schools.dart';
 import 'package:teacherboardapp/pages/signup.dart';
 
 void main() {

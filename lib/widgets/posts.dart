@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacherboardapp/pages/details.dart';
+import 'package:teacherboardapp/pages/schools.dart';
 
 class Post {
   String title = '';
@@ -51,57 +52,110 @@ class Filter {
 }
 
 class Posts extends StatefulWidget {
-  const Posts({this.filter});
+  const Posts({this.filter, this.showNewPostButton=true, this.showSchoolSelect=true});
   final Filter filter;
+  final bool showNewPostButton;
+  final bool showSchoolSelect;
   @override
   _PostsState createState() => _PostsState();
 }
 
 class _PostsState extends State<Posts> {
   Filter filter;
+  bool showNewPostButton;
+  bool showSchoolSelect;
+
+
+  String _currentSchool = 'Choose school';
+
+  _pickSchool(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SchoolList())
+    );
+
+    setState(() {
+      if(result!=null)
+      _currentSchool = result;
+    });
+  }
 
   initState() {
     filter = widget.filter;
+    showNewPostButton = widget.showNewPostButton;
+    showSchoolSelect = widget.showSchoolSelect;
     super.initState();
   }
 
   Widget _buildPosts() {
     return Stack(
       children: <Widget>[
-        StreamBuilder<QuerySnapshot>(
-          stream: filter.results(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) return const Text('Loading...');
-            final int messageCount = snapshot.data.documents.length;
-            return ListView.builder(
-              itemCount: messageCount,
-              itemBuilder: (_, int index) {
-                final DocumentSnapshot document = snapshot.data.documents[index];
-                // TODO popraviti time da radi
-                Post post = new Post(
-                    document['title'],
-                    document['content'],
-                    document['user_name'],
-                    document['likes'],
-                    document['dislikes'],
-                    document['time'],
-                    document['school_name'],
-                    document['subject_name'],
-                    document.documentID);
-                return _buildRow(post);
-              },
-            );
-          },
+        Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).accentColor, width: 0.5)
+              ),
+              margin: EdgeInsets.fromLTRB(16,8,16,0),
+              child: FlatButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onPressed: () {
+                  _pickSchool(context);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(_currentSchool, style: TextStyle(fontFamily: 'Montserrat', fontSize: 16),),
+                    Icon(
+                      Icons.expand_more,
+                      color: Theme.of(context).accentColor,
+                      size: 32,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: filter.results(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return const Text('Loading...');
+                  final int messageCount = snapshot.data.documents.length;
+                  return ListView.builder(
+                    itemCount: messageCount,
+                    itemBuilder: (_, int index) {
+                      final DocumentSnapshot document = snapshot.data.documents[index];
+                      // TODO popraviti time da radi
+                      Post post = new Post(
+                          document['title'],
+                          document['content'],
+                          document['user_name'],
+                          document['likes'],
+                          document['dislikes'],
+                          document['time'],
+                          document['school_name'],
+                          document['subject_name'],
+                          document.documentID);
+                      return _buildRow(post);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-        Positioned(
-          bottom: 10,
-          right: 20,
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/new-post');
-            },
-            child: Icon(
-              Icons.add
+        Visibility(
+          visible: showNewPostButton,
+          child: Positioned(
+            bottom: 10,
+            right: 20,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/new-post');
+              },
+              child: Icon(
+                Icons.add
+              ),
             ),
           ),
         )
