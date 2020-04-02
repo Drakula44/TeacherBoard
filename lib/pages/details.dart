@@ -40,6 +40,11 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
+    print(new Filter(
+                      collection: "commment",
+                      par1name: "post_id",
+                      par1equal: postID)
+                  .results());
     return Scaffold(
       backgroundColor: Color(0xFF26282B),
       appBar: AppBar(

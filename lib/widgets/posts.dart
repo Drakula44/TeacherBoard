@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:teacherboardapp/pages/details.dart';
 import 'package:teacherboardapp/pages/schools.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
 class Post {
   String title = '';
   String content = '';
@@ -200,8 +204,12 @@ class _PostListItemState extends State<PostListItem> {
 
   int maxLines;
 
-  void _toggleLike(int newLikeState) {
+  void _toggleLike(int newLikeState) async {
+    FirebaseUser _user = await _auth.currentUser();
+    DocumentReference lol = Firestore.instance.collection('users').document(_user.uid);
+    
     if (_likeState == newLikeState) {
+
       newLikeState = 0;
     }
 
@@ -219,7 +227,7 @@ class _PostListItemState extends State<PostListItem> {
 
             if (_likeState == -1) _post.dislikes--;
 
-            //TODO: Server side
+            lol.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id:1}},merge:true);
           });
         }
         break;
@@ -236,7 +244,7 @@ class _PostListItemState extends State<PostListItem> {
             if (_likeState == -1) _post.dislikes--;
             if (_likeState == 1) _post.likes--;
 
-            //TODO: Server side
+            lol.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id:0}},merge:true);
           });
         }
         break;
@@ -253,6 +261,7 @@ class _PostListItemState extends State<PostListItem> {
             _post.dislikes++;
 
             if (_likeState == 1) _post.likes--;
+            lol.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id:-1}},merge:true);
           });
         }
         break;
