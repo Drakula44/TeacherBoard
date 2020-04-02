@@ -7,6 +7,7 @@ import 'package:teacherboardapp/pages/login.dart';
 import 'package:teacherboardapp/pages/new_post.dart';
 import 'package:teacherboardapp/pages/schools.dart';
 import 'package:teacherboardapp/pages/signup.dart';
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 void main() {
   runApp(MyApp());
@@ -17,11 +18,10 @@ class MyApp extends StatelessWidget {
 
   final Color textColor = Colors.white;
 
-  FirebaseUser user;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      initialRoute: (_auth.currentUser() != 'null') ? '/home' : '/login',
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.white,

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:teacherboardapp/pages/search.dart';
 import 'package:teacherboardapp/pages/profile.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -58,14 +60,19 @@ class _HomeState extends State<Home> {
   bool _state = false;
   String _userEmail;
   String _userName;
+
   String _userUID;
   FirebaseUser _user;
   void _checkState() async {
     _user = await _auth.currentUser();
+    
     if (_user != null) {
+      DocumentSnapshot lol1 = await Firestore.instance.collection('users').document(_user.uid).snapshots().first;
+      String _username = lol1.data['username'];
       setState(() {
         _state = true;
         _userEmail = _user.email;
+        _userName = _username;
       });
     } else {
       _state = false;
@@ -76,6 +83,10 @@ class _HomeState extends State<Home> {
     initialPage: 0,
     keepPage: true,
   );
+  void _signOut() async
+  {
+    await _auth.signOut();
+  }
 
 
   @override
@@ -90,11 +101,11 @@ class _HomeState extends State<Home> {
             Container(
               child: FlatButton(
                       child: Text(
-                        _state ? _userEmail : 'Log In',
+                        _state ? _userName : 'Log In',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        _state ? _signOut() : Navigator.pushNamed(context, '/login');
                       },
                     ),
             )

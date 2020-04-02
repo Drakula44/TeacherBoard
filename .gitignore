@@ -9,7 +9,7 @@ pubspec.lock
 
 .idea/
 .dart_tool/
-./.packages
+.packages
 .metapackages
 
 # Files for the ART/Dalvik VM

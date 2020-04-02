@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _SignUpData {
   String email = '';
@@ -16,14 +21,12 @@ class SignUp extends StatelessWidget {
   }
 }
 
-
 class SignUpForm extends StatefulWidget {
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-
   final _formKey = GlobalKey<FormState>();
 
   _SignUpData _data = new _SignUpData();
@@ -40,6 +43,24 @@ class _SignUpFormState extends State<SignUpForm> {
         _passwordIcon = Icons.visibility_off;
       }
     });
+  }
+
+  void _register() async {
+    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+      email: _data.email,
+      password: _data.password,
+    ))
+        .user;
+    if (user != null) {
+      print("Success");
+      Firestore.instance.document('users/'+user.uid).setData(<String,dynamic>{
+                                    'email': user.email,
+                                    'username': _data.username,});
+
+      Navigator.pop(context);
+    } else {
+      print("error");
+    }
   }
 
   @override
@@ -60,12 +81,12 @@ class _SignUpFormState extends State<SignUpForm> {
               TextFormField(
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'E-mail can\'t be empty';
+                    return 'E-mail can\'t be provera';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  labelText: 'E-mail',
+                  labelText: 'E-mailaa',
                   labelStyle: TextStyle(
                     color: Theme.of(context).primaryColor,
                   ),
@@ -152,16 +173,26 @@ class _SignUpFormState extends State<SignUpForm> {
                 decoration: BoxDecoration(
                   color: Color(0xFF26282B),
                   boxShadow: [
-                    BoxShadow(color: Color(0xFF1B1C1D), offset: Offset(5,5), blurRadius: 11),
-                    BoxShadow(color: Color(0xCC2F3136), offset: Offset(-5,-5), blurRadius: 11)
+                    BoxShadow(
+                        color: Color(0xFF1B1C1D),
+                        offset: Offset(5, 5),
+                        blurRadius: 11),
+                    BoxShadow(
+                        color: Color(0xCC2F3136),
+                        offset: Offset(-5, -5),
+                        blurRadius: 11)
                   ],
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: FlatButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
+                      print(_data.email);
+                      print(_data.password);
+                      _register();
                     }
                   },
                   child: Text(
