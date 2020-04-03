@@ -4,6 +4,7 @@
 *.ap_
 *.aab
 
+.vscode/
 pubspec.lock
 .flutter-*
 
