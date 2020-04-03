@@ -1,5 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+
+import '../main.dart';
+import 'home.dart';
+
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -46,11 +52,16 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _login(String email, String pass) async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-      email: _data.email,
-      password: _data.password,
-    ))
-        .user;
+    FirebaseUser user;
+    try {
+      user = (await _auth.signInWithEmailAndPassword(
+        email: _data.email,
+        password: _data.password,
+      ))
+          .user;
+    } on PlatformException catch (e) {
+      print(e);
+    }
     if (user != null) {
       setState(() {
         _success = true;

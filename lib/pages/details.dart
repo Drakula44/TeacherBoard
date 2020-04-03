@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
 
+import '../main.dart';
+
 class Comment {
   String content;
   String author;
@@ -13,15 +15,18 @@ class Comment {
 
 class Details extends StatefulWidget {
   final Post _post;
+  final User _user;
 
-  Details(this._post);
+  Details(this._post,this._user);
 
   @override
-  _DetailsState createState() => _DetailsState();
+  _DetailsState createState() => _DetailsState(_user);
 }
 
 class _DetailsState extends State<Details> {
+  final User _user;
   String postID;
+  _DetailsState(this._user);
   List<Comment> comments = [
     new Comment('epic', 'drakula44', '31 Feb 1994'),
     new Comment('komentar', 'stex', '19 Apr 2002')
@@ -57,6 +62,7 @@ class _DetailsState extends State<Details> {
       body: Column(
         children: <Widget>[
           PostListItem(
+            _user,
             post: widget._post,
             maxLines: 30,
           ),

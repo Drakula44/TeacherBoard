@@ -4,7 +4,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
+import '../main.dart';
+
 class NewPost extends StatelessWidget {
+  final User _user;
+  NewPost(this._user);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

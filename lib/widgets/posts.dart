@@ -6,6 +6,8 @@ import 'package:teacherboardapp/pages/details.dart';
 import 'package:teacherboardapp/pages/schools.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../main.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
@@ -19,9 +21,10 @@ class Post {
   String school = '';
   String subject = '';
   String post_id = '';
+  DocumentReference doc;
 
   Post(this.title, this.content, this.author, this.likes, this.dislikes,
-      this.timestamp, this.school, this.subject, this.post_id);
+      this.timestamp, this.school, this.subject, this.post_id,this.doc);
 }
 
 class Filter {
@@ -56,20 +59,22 @@ class Filter {
 }
 
 class Posts extends StatefulWidget {
-  const Posts({this.filter, this.showNewPostButton=true, this.showSchoolSelect=true});
+
+  const Posts({this.filter, this.showNewPostButton=true, this.showSchoolSelect=true,this.user});
   final Filter filter;
+  final User user;
   final bool showNewPostButton;
   final bool showSchoolSelect;
   @override
-  _PostsState createState() => _PostsState();
+  _PostsState createState() => _PostsState(user);
 }
 
 class _PostsState extends State<Posts> {
   Filter filter;
   bool showNewPostButton;
   bool showSchoolSelect;
-
-
+  final User _user;
+  _PostsState(this._user);
   String _currentSchool = 'Choose school';
 
   _pickSchool(BuildContext context) async {
@@ -139,7 +144,8 @@ class _PostsState extends State<Posts> {
                           document['time'],
                           document['school_name'],
                           document['subject_name'],
-                          document.documentID);
+                          document.documentID,
+                          document.reference);
                       return _buildRow(post);
                     },
                   );
@@ -171,11 +177,11 @@ class _PostsState extends State<Posts> {
     return InkWell(
         onTap: () {
           var route = new MaterialPageRoute(
-            builder: (BuildContext context) => new Details(post),
+            builder: (BuildContext context) => new Details(post,_user),
           );
           Navigator.of(context).push(route);
         },
-        child: PostListItem(post: post));
+        child: PostListItem(_user,post: post));
   }
 
   @override
@@ -185,18 +191,20 @@ class _PostsState extends State<Posts> {
 }
 
 class PostListItem extends StatefulWidget {
-  const PostListItem({this.post, this.maxLines});
+  const PostListItem(this._user,{this.post, this.maxLines});
 
   final Post post;
   final int maxLines;
+  final User _user;
 
   @override
-  _PostListItemState createState() => _PostListItemState();
+  _PostListItemState createState() => _PostListItemState(_user);
 }
 
 class _PostListItemState extends State<PostListItem> {
   Post _post;
-
+  final User _user;
+  _PostListItemState(this._user);
   int _likeState = 0;
 
   FontWeight _likeFontWeight = FontWeight.normal;
@@ -204,15 +212,17 @@ class _PostListItemState extends State<PostListItem> {
 
   int maxLines;
 
+  Color _likeButtonColor;
+  Color _dislikeButtonColor;
+
   void _toggleLike(int newLikeState) async {
-    FirebaseUser _user = await _auth.currentUser();
-    DocumentReference lol = Firestore.instance.collection('users').document(_user.uid);
-    
+    if(_user ==  null)
+      return;
     if (_likeState == newLikeState) {
 
       newLikeState = 0;
     }
-
+    int _st = 0;
     switch (newLikeState) {
       case 1:
         {
@@ -226,8 +236,6 @@ class _PostListItemState extends State<PostListItem> {
             _post.likes++;
 
             if (_likeState == -1) _post.dislikes--;
-
-            lol.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id:1}},merge:true);
           });
         }
         break;
@@ -244,7 +252,6 @@ class _PostListItemState extends State<PostListItem> {
             if (_likeState == -1) _post.dislikes--;
             if (_likeState == 1) _post.likes--;
 
-            lol.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id:0}},merge:true);
           });
         }
         break;
@@ -261,7 +268,6 @@ class _PostListItemState extends State<PostListItem> {
             _post.dislikes++;
 
             if (_likeState == 1) _post.likes--;
-            lol.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id:-1}},merge:true);
           });
         }
         break;
@@ -271,11 +277,13 @@ class _PostListItemState extends State<PostListItem> {
           print("lol");
         }
     }
+    _user.doc.setData(<String,dynamic>{'likes':<String,dynamic>{_post.post_id: newLikeState }},merge:true);
+      
+    _post.doc.setData(<String,dynamic>{'dislikes':_post.likes},merge: true);
+    _post.doc.setData(<String,dynamic>{'likes':_post.likes},merge: true);
     _likeState = newLikeState;
   }
 
-  Color _likeButtonColor;
-  Color _dislikeButtonColor;
 
   @override
   void initState() {
@@ -361,6 +369,7 @@ class _PostListItemState extends State<PostListItem> {
                                 size: 30,
                               ),
                               onPressed: () {
+                                print(_user);
                                 setState(() {
                                   _toggleLike(1);
                                 });

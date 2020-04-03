@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:teacherboardapp/pages/details.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teacherboardapp/pages/home.dart';
 import 'package:teacherboardapp/pages/login.dart';
 import 'package:teacherboardapp/pages/new_post.dart';
@@ -13,15 +14,41 @@ void main() {
   runApp(MyApp());
   SystemChrome.setEnabledSystemUIOverlays([]);
 }
+class User
+{
+  FirebaseUser userF;
+  String userName;
+  String userEmail;
+  String uID;
+  Map<String,dynamic> likes;
+  DocumentReference doc;
+  User(this.userF,this.userName,this.userEmail,this.uID,this.doc);
+}
 
 class MyApp extends StatelessWidget {
-
+  User _user;
   final Color textColor = Colors.white;
+
+  void getUser() async
+  {
+    FirebaseUser _userF = await _auth.currentUser();
+    print("lol");
+    if(_userF == null)
+    {
+      return;
+    } 
+    print("loe");
+    DocumentReference userDoc = await Firestore.instance.collection('users').document(_userF.uid);
+    DocumentSnapshot lol1 = await userDoc.snapshots().first;
+    String _username = lol1.data['username'];
+    _user = new User(_userF, _username ,_userF.email, _userF.uid,userDoc);
+  }
 
   @override
   Widget build(BuildContext context) {
+    getUser();
     return MaterialApp(
-      initialRoute: (_auth.currentUser() != 'null') ? '/home' : '/login',
+      initialRoute:  '/home' ,
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.white,
@@ -44,10 +71,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Montserrat',
       ),
       routes: {
-        '/home': (context) => Home(),
+        '/home': (context) => Home(_user),
         '/login': (context) => Login(),
         '/signup': (context) => SignUp(),
-        '/new-post': (context) => NewPost(),
+        '/new-post': (context) => NewPost(_user),
       },
     );
   }
