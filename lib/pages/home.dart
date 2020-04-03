@@ -5,52 +5,59 @@ import 'package:teacherboardapp/pages/search.dart';
 import 'package:teacherboardapp/pages/profile.dart';
 import 'package:teacherboardapp/widgets/posts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
-
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
+import '../main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
+
+
+class Home extends StatefulWidget {
+  final User _user;
+  Home(this._user);
+  
+  @override
+  _HomeState createState() => _HomeState(_user);
+}
+
 class _HomeState extends State<Home> {
+  User _user;
+  _HomeState(this._user);
   int selectedIndex = 0;
-  /*void _getPosts() async {
-    Firestore.instance.collection('posts').
-    posts =  [
-      new Post('Naslov 1', 'blah blah', 'TvojaMajka34', 23, 11, '16 Mar 2020',
-          'Matematicka gimnazija', 'Analiza'),
-      new Post(
-          'drakula je peder',
-          'i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan i cigan ',
-          'CeoSvet',
-          1000,
-          0,
-          '11 Sep 2001',
-          'Frizerska skola',
-          'Brijanje dlaka na jajaima'),
-      new Post('Korona nas jebe', 'korona nas loma jebe u dupe', 'AVAVAV', 27,
-          2222, '32 Feb 2020', 'Skole zatvorene', 'Predemet')
-    ];
-  }
-
-   */
-
   List<Post> posts;
 
   List<Widget> navOptions;
 
+
   @override
   void initState() {
     navOptions = [
-      Posts(filter: new Filter(all: true, collection: "posts")),
+      Posts(filter: new Filter(all: true, collection: "posts"),user: _user),
       Search(),
       Profile(),
     ];
     super.initState();
   }
 
+  void _getUser() async
+  {
+    FirebaseUser _userF = await _auth.currentUser();
+    print("lol");
+    if(_userF == null)
+    {
+      return;
+    } 
+    print("loe");
+    DocumentReference userDoc = Firestore.instance.collection('users').document(_userF.uid);
+    print("lol3");
+    DocumentSnapshot lol1 = await userDoc.snapshots().first;
+    print("lol3");
+    String _username = lol1.data['username'];
+    print("lol3");
+    _user = new User(_userF, _username ,_userF.email, _userF.uid,userDoc);
+    print("lol3");
+  }
   final List<String> appBarTitles = [
     'Teacherboard',
     'Search',
@@ -58,23 +65,14 @@ class _HomeState extends State<Home> {
   ];
 
   bool _state = false;
-  String _userEmail;
-  String _userName;
-
-  String _userUID;
-  FirebaseUser _user;
-  void _checkState() async {
-    _user = await _auth.currentUser();
+  void _checkState() async {   
     
     if (_user != null) {
-      DocumentSnapshot lol1 = await Firestore.instance.collection('users').document(_user.uid).snapshots().first;
-      String _username = lol1.data['username'];
       setState(() {
         _state = true;
-        _userEmail = _user.email;
-        _userName = _username;
       });
     } else {
+      _getUser();
       _state = false;
     }
   }
@@ -85,6 +83,7 @@ class _HomeState extends State<Home> {
   );
   void _signOut() async
   {
+    _state = false;
     await _auth.signOut();
   }
 
@@ -101,7 +100,7 @@ class _HomeState extends State<Home> {
             Container(
               child: FlatButton(
                       child: Text(
-                        _state ? _userName : 'Log In',
+                        (_user != null) ? _user.userName : 'Log In',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
